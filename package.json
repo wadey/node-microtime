@@ -1,0 +1,15 @@
+{
+  "name": "microtime",
+  "version": "0.1.0",
+  "description": "Get the current time in microseconds",
+  "author": "Wade Simmons <wade@wades.im> (http://wades.im/mons)",
+  "homepage": "https://github.com/wadey/node-microtime",
+  "repository": "git://github.com/wadey/node-microtime.git"
+  "main": "./microtime",
+  "engines": {
+    "node": ">= 0.2.0"
+  },
+  "scripts": {
+    "install": "node-waf configure build"
+  },
+}
