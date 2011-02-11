@@ -1,6 +1,6 @@
 # node-microtime
 
-Date.now() will only give you accuracy in milliseconds. This module calls `gettimeofday(2)` to get the time in microseconds and provides it in a few difference formats.
+Date.now() will only give you accuracy in milliseconds. This module calls `gettimeofday(2)` to get the time in microseconds and provides it in a few different formats.
 
 # Installation
 
