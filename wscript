@@ -18,11 +18,6 @@ def build(bld):
   obj = bld.new_task_gen("cxx", "shlib", "node_addon")
   obj.target = "microtime"
   obj.find_sources_in_dirs("src")
-  # see http://www.mail-archive.com/programming@jsoftware.com/msg05886.html
-  #if platform == 'mac':
-  obj.lib = ["System"]
-  #else:
-  #    obj.lib = ["gethostname"]
 
 def shutdown(bld):
   # HACK to get binding.node out of build directory.
