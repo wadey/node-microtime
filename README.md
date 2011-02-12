@@ -36,3 +36,12 @@ Get the current time and return as a list with seconds and microseconds (matchin
     1297448897.600976
     > microtime.nowStruct()
     [ 1297448902, 753875 ]
+
+## Tested On
+
+    Node.js 0.2.6
+      - OS X 10.6.6
+      - Ubuntu 10.04
+
+    Node.js 0.4.0
+      - OS X 10.6.6
