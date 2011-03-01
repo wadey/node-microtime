@@ -60,4 +60,4 @@ Starting with version 0.1.3, there is a test script that tries to guess the cloc
 
 ## Warning for Cygwin users
 
-It appears that Cygwin only implements `gettimeofday(2)` with [millisecond accuracy](http://old.nabble.com/gettimeofday---millisecond-accuracy-td21085475.html).
+It appears that Cygwin only implements `gettimeofday(2)` with [millisecond accuracy](http://old.nabble.com/gettimeofday---millisecond-accuracy-p21085475.html).
