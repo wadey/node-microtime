@@ -21,7 +21,7 @@ be accurate up to _Tue, 05 Jun 2255 23:47:34 GMT_.
 ### microtime.nowDouble()
 
 Get the current time in seconds as a floating point number with microsecond
-accuracy.
+accuracy (similar to `time.time()` in Python and `Time.now.to_f` in Ruby).
 
 ### microtime.nowStruct()
 
