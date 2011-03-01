@@ -43,5 +43,10 @@ Get the current time and return as a list with seconds and microseconds (matchin
       - OS X 10.6.6
       - Ubuntu 10.04
 
-    Node.js 0.4.0
+    Node.js 0.4.1
       - OS X 10.6.6
+      - Windows 7 64bit (Cygwin) *
+
+## Warning for Cygwin users
+
+It appears that Cygwin only implements `gettimeofday(2)` with [millisecond accuracy](http://old.nabble.com/gettimeofday---millisecond-accuracy-td21085475.html).
