@@ -5,7 +5,7 @@
   "author": "Wade Simmons <wade@wades.im> (http://wades.im/mons)",
   "homepage": "https://github.com/wadey/node-microtime",
   "repository": "git://github.com/wadey/node-microtime.git",
-  "main": "./microtime",
+  "main": "./index",
   "engines": {
     "node": ">= 0.2.0"
   },
