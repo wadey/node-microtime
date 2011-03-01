@@ -37,7 +37,18 @@ Get the current time and return as a list with seconds and microseconds (matchin
     > microtime.nowStruct()
     [ 1297448902, 753875 ]
 
-## Tested On
+## Estimating clock resolution
+
+Starting with version 0.1.3, there is a test script that tries to guess the clock resolution. You can run it with `npm test microtime`. Example output:
+
+    microtime.now() = 1298960083489806
+    microtime.nowDouble() = 1298960083.511521
+    microtime.nowStruct() = [ 1298960083, 511587 ]
+
+    Guessing clock resolution...
+    Clock resolution observed: 1us
+
+## Tested on
 
     Node.js 0.2.6
       - OS X 10.6.6
