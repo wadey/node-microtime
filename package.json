@@ -10,7 +10,8 @@
     "node": ">= 0.2.0"
   },
   "scripts": {
-    "install": "node-waf configure build"
+    "install": "node-waf configure build",
+    "test": "node test.js"
   },
   "directories": {},
   "files": [
