@@ -10,7 +10,6 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "install": "node-waf configure build",
     "test": "node test.js"
   },
   "dependencies": {
