@@ -7,10 +7,13 @@
   "repository": "git://github.com/wadey/node-microtime.git",
   "main": "./index",
   "engines": {
-    "node": ">= 0.2.0"
+    "node": ">= 0.6.0"
   },
   "scripts": {
     "install": "node-waf configure build",
     "test": "node test.js"
+  },
+  "dependencies": {
+    "bindings": "~0.3.0"
   }
 }
