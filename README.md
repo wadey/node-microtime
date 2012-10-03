@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wadey/node-microtime.png)](https://travis-ci.org/wadey/node-microtime)
+
 # node-microtime
 
 Date.now() will only give you accuracy in milliseconds. This module calls
@@ -57,6 +59,10 @@ Starting with version 0.1.3, there is a test script that tries to guess the cloc
     Node.js 0.4.1
       - OS X 10.6.6
       - Windows 7 64bit (Cygwin) *
+
+    Node.js 0.8.11
+      - OS X 10.7.4
+      - Travis (linux): https://travis-ci.org/wadey/node-microtime
 
 ## Warning for Cygwin users
 
