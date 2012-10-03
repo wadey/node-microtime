@@ -13,6 +13,6 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "bindings": "~0.3.0"
+    "bindings": "1.0.0"
   }
 }
