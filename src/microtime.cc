@@ -58,3 +58,4 @@ void init( Handle<Object> target ) {
     NODE_SET_METHOD(target, "nowDouble", NowDouble);
     NODE_SET_METHOD(target, "nowStruct", NowStruct);
 }
+NODE_MODULE(microtime,init)
