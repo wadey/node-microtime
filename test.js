@@ -8,14 +8,18 @@ console.log('\nGuessing clock resolution...')
 
 var start = microtime.now()
   , minDiff = Infinity
+  , minCycles = 10000
+  , maxCycles = 100000
+  , cycles = maxCycles
 
-for (var i = 0; i < 10000; ++i) {
+for (var i = 0; i < cycles; ++i) {
   var a = microtime.now()
     , b = microtime.now()
     , diff = (b - a) || (b - start)
 
   if (diff > 0 && diff < minDiff) {
     minDiff = diff
+    cycles = minCycles
   }
 }
 
