@@ -52,20 +52,6 @@ Starting with version 0.1.3, there is a test script that tries to guess the cloc
     Guessing clock resolution...
     Clock resolution observed: 1us
 
-## Tested on
-
-    Node.js 0.2.6
-      - OS X 10.6.6
-      - Ubuntu 10.04
-
-    Node.js 0.4.1
-      - OS X 10.6.6
-      - Windows 7 64bit (Cygwin) *
-
-    Node.js 0.8.11
-      - OS X 10.7.4
-      - Travis (linux): https://travis-ci.org/wadey/node-microtime
-
 ## Warning for Cygwin users
 
 It appears that Cygwin only implements `gettimeofday(2)` with [millisecond accuracy](http://old.nabble.com/gettimeofday---millisecond-accuracy-p21085475.html).
