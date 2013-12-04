@@ -3,16 +3,16 @@
 # node-microtime
 
 Date.now() will only give you accuracy in milliseconds. This module calls
-`gettimeofday(2)` to get the time in microseconds and provides it in a few
+[`process.hrtime`](http://nodejs.org/api/process.html#process_process_hrtime) to get the time in microseconds and provides it in a few
 different formats. The same warning from that function applies:
 _The resolution of the system clock is hardware dependent, and the time may
-be updated continuously or in ``ticks.''_
+be updated continuously or in "ticks."_
 
 # Installation
 
     npm install microtime
 
-* Requires npm >= 1.1.5 (which bundles node-gyp). See https://github.com/wadey/node-microtime/issues/9
+* Requires node >= 0.7.6 See [http://nodejs.org/changelog.html](http://nodejs.org/changelog.html).
 
 # Usage
 
