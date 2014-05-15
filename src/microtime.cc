@@ -41,9 +41,6 @@
     #include <sys/time.h>
 #endif
 
-using namespace v8;
-using namespace node;
-
 static NAN_METHOD(Now) {
     NanScope();
 
@@ -51,11 +48,11 @@ static NAN_METHOD(Now) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        ThrowException(ErrnoException(errno, "gettimeofday"));
+        NanThrowError(node::ErrnoException(errno, "gettimeofday"));
         NanReturnUndefined();
     }
 
-    NanReturnValue(Number::New((t.tv_sec * 1000000.0) + t.tv_usec));
+    NanReturnValue(NanNew<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
 }
 
 static NAN_METHOD(NowDouble) {
@@ -65,11 +62,11 @@ static NAN_METHOD(NowDouble) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        ThrowException(ErrnoException(errno, "gettimeofday"));
+        NanThrowError(node::ErrnoException(errno, "gettimeofday"));
         NanReturnUndefined();
     }
 
-    NanReturnValue(Number::New(t.tv_sec + (t.tv_usec * 0.000001)));
+    NanReturnValue(NanNew<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
 }
 
 static NAN_METHOD(NowStruct) {
@@ -79,19 +76,19 @@ static NAN_METHOD(NowStruct) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        ThrowException(ErrnoException(errno, "gettimeofday"));
+        NanThrowError(node::ErrnoException(errno, "gettimeofday"));
         NanReturnUndefined();
     }
 
-    Local<Array> array = Array::New(2);
-    array->Set(Integer::New(0), Uint32::New(t.tv_sec));
-    array->Set(Integer::New(1), Uint32::New(t.tv_usec));
+    v8::Local<v8::Array> array = NanNew<v8::Array>(2);
+    array->Set(NanNew<v8::Integer>(0), NanNew<v8::Number>((double)t.tv_sec));
+    array->Set(NanNew<v8::Integer>(1), NanNew<v8::Number>((double)t.tv_usec));
 
     NanReturnValue(array);
 }
 
 extern "C"
-void init( Handle<Object> target ) {
+void init( v8::Handle<v8::Object> target ) {
     NanScope();
 
     NODE_SET_METHOD(target, "now", Now);
