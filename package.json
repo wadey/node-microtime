@@ -13,7 +13,7 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "bindings": "1.1.1",
+    "bindings": "1.2.0",
     "nan": "0.6.0"
   }
 }
