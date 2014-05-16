@@ -87,10 +87,7 @@ static NAN_METHOD(NowStruct) {
     NanReturnValue(array);
 }
 
-extern "C"
-void init( v8::Handle<v8::Object> target ) {
-    NanScope();
-
+void init(v8::Handle<v8::Object> target) {
     NODE_SET_METHOD(target, "now", Now);
     NODE_SET_METHOD(target, "nowDouble", NowDouble);
     NODE_SET_METHOD(target, "nowStruct", NowStruct);
