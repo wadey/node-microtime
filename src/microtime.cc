@@ -8,7 +8,7 @@
 
 #include <errno.h>
 
-#include "nan.h"
+#include <nan.h>
 
 #if defined(_MSC_VER)
     #include <time.h>
@@ -41,43 +41,40 @@
     #include <sys/time.h>
 #endif
 
-static NAN_METHOD(Now) {
+NAN_METHOD(Now) {
     NanScope();
 
     timeval t;
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        NanThrowError(node::ErrnoException(errno, "gettimeofday"));
-        NanReturnUndefined();
+        return NanThrowError(node::ErrnoException(errno, "gettimeofday"));
     }
 
     NanReturnValue(NanNew<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
 }
 
-static NAN_METHOD(NowDouble) {
+NAN_METHOD(NowDouble) {
     NanScope();
 
     timeval t;
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        NanThrowError(node::ErrnoException(errno, "gettimeofday"));
-        NanReturnUndefined();
+        return NanThrowError(node::ErrnoException(errno, "gettimeofday"));
     }
 
     NanReturnValue(NanNew<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
 }
 
-static NAN_METHOD(NowStruct) {
+NAN_METHOD(NowStruct) {
     NanScope();
 
     timeval t;
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        NanThrowError(node::ErrnoException(errno, "gettimeofday"));
-        NanReturnUndefined();
+        return NanThrowError(node::ErrnoException(errno, "gettimeofday"));
     }
 
     v8::Local<v8::Array> array = NanNew<v8::Array>(2);
@@ -87,9 +84,13 @@ static NAN_METHOD(NowStruct) {
     NanReturnValue(array);
 }
 
-void init(v8::Handle<v8::Object> target) {
-    NODE_SET_METHOD(target, "now", Now);
-    NODE_SET_METHOD(target, "nowDouble", NowDouble);
-    NODE_SET_METHOD(target, "nowStruct", NowStruct);
+void InitAll(v8::Handle<v8::Object> exports) {
+    exports->Set(NanNew<v8::String>("now"),
+            NanNew<v8::FunctionTemplate>(Now)->GetFunction());
+    exports->Set(NanNew<v8::String>("nowDouble"),
+            NanNew<v8::FunctionTemplate>(NowDouble)->GetFunction());
+    exports->Set(NanNew<v8::String>("nowStruct"),
+            NanNew<v8::FunctionTemplate>(NowStruct)->GetFunction());
 }
-NODE_MODULE(microtime,init)
+
+NODE_MODULE(microtime, InitAll)
