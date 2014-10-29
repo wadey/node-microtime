@@ -18,6 +18,9 @@
     // so stub out a gettimeofday() method that uses this
     // NOTE: When I tested on Windows XP, it only gave me about 10ms accuracy
     // (but at least it compiles)
+	//
+	// Higher precision time is available for Windows 8/Server 2012 via 
+	// GetSystemTimePreciseAsFileTime.
 
     struct timezone {
         int  tz_minuteswest;
@@ -26,7 +29,11 @@
 
     int gettimeofday(struct timeval *tv, struct timezone *tz) {
         FILETIME ft;
-        GetSystemTimeAsFileTime(&ft);
+	#if (WINVER >= 0x0602)
+        GetSystemTimePreciseAsFileTime(&ft);
+	#else
+		GetSystemTimeAsFileTime(&ft);
+	#endif
         unsigned long long t = ft.dwHighDateTime;
         t <<= 32;
         t |= ft.dwLowDateTime;
