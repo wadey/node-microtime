@@ -14,10 +14,10 @@
     #include <time.h>
     #include <windows.h>
 
-    // The closest thing to gettimeofday in Windows is GetSystemTimeAsFileTime
-    // so stub out a gettimeofday() method that uses this
-    // NOTE: When I tested on Windows XP, it only gave me about 10ms accuracy
-    // (but at least it compiles)
+    // Pick GetSystemTimePreciseAsFileTime or GetSystemTimeAsFileTime depending
+    // on which is available at runtime.
+    typedef VOID (WINAPI *WinGetSystemTime)(LPFILETIME);
+    static WinGetSystemTime getSystemTime = NULL;
 
     struct timezone {
         int  tz_minuteswest;
@@ -26,7 +26,7 @@
 
     int gettimeofday(struct timeval *tv, struct timezone *tz) {
         FILETIME ft;
-        GetSystemTimeAsFileTime(&ft);
+        (*getSystemTime)(&ft);
         unsigned long long t = ft.dwHighDateTime;
         t <<= 32;
         t |= ft.dwLowDateTime;
@@ -91,6 +91,16 @@ void InitAll(v8::Handle<v8::Object> exports) {
             NanNew<v8::FunctionTemplate>(NowDouble)->GetFunction());
     exports->Set(NanNew<v8::String>("nowStruct"),
             NanNew<v8::FunctionTemplate>(NowStruct)->GetFunction());
+
+#if defined(_MSC_VER)
+    getSystemTime = (WinGetSystemTime) GetProcAddress(
+            GetModuleHandle(TEXT("kernel32.dll")),
+            "GetSystemTimePreciseAsFileTime"
+    );
+    if (getSystemTime == NULL) {
+        getSystemTime = &GetSystemTimeAsFileTime;
+    }
+#endif
 }
 
 NODE_MODULE(microtime, InitAll)
