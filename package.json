@@ -14,6 +14,6 @@
   },
   "dependencies": {
     "bindings": "1.2.x",
-    "nan": "1.5.x"
+    "nan": "1.7.x"
   }
 }
