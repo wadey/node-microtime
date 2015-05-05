@@ -41,6 +41,10 @@
     #include <sys/time.h>
 #endif
 
+NAN_INLINE v8::Local<v8::Value> ErrnoException(const int errorno) {
+    return NanError(strerror(errorno), errorno);
+}
+
 NAN_METHOD(Now) {
     NanScope();
 
@@ -48,7 +52,7 @@ NAN_METHOD(Now) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return NanThrowError(node::ErrnoException(errno, "gettimeofday"));
+        return NanThrowError(ErrnoException(errno));
     }
 
     NanReturnValue(NanNew<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
@@ -61,7 +65,7 @@ NAN_METHOD(NowDouble) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return NanThrowError(node::ErrnoException(errno, "gettimeofday"));
+        return NanThrowError(ErrnoException(errno));
     }
 
     NanReturnValue(NanNew<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
@@ -74,7 +78,7 @@ NAN_METHOD(NowStruct) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return NanThrowError(node::ErrnoException(errno, "gettimeofday"));
+        return NanThrowError(ErrnoException(errno));
     }
 
     v8::Local<v8::Array> array = NanNew<v8::Array>(2);
