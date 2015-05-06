@@ -1,6 +1,8 @@
-[![Build Status](https://travis-ci.org/wadey/node-microtime.png)](https://travis-ci.org/wadey/node-microtime)
-
 # node-microtime
+
+[![NPM](https://nodei.co/npm/microtime.png?downloads=true&downloadRank=true)](https://nodei.co/npm/microtime/)
+
+[![Build Status](https://api.travis-ci.org/wadey/node-microtime.svg?branch=master)](https://travis-ci.org/wadey/node-microtime)
 
 Date.now() will only give you accuracy in milliseconds. This module calls
 `gettimeofday(2)` to get the time in microseconds and provides it in a few
