@@ -21,20 +21,17 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install
+  - IF %nodejs_version% LSS 2 npm install
+  - IF %nodejs_version% GEQ 2 npm install --msvs_version=2013
 
 build: off
 
 test_script:
   # Output useful info for debugging.
   - node --version && npm --version
-  # We test multiple Windows shells because of prior stdout buffering issues
-  # filed against Grunt. https://github.com/joyent/node/issues/3584
-  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: npm test
-
-matrix:
-  fast_finish: true
+  - IF %nodejs_version% LSS 1 npm test
+  # Work around https://github.com/iojs/io.js/issues/751
+  - IF %nodejs_version% GEQ 1 iojs test.js
 
 cache:
   - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> package.json  # global npm modules
