@@ -5,6 +5,7 @@ node_js:
   - "0.12"
   - "iojs-1"
   - "iojs-2"
+  - "iojs-3"
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
 sudo: false
