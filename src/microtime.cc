@@ -41,60 +41,47 @@
     #include <sys/time.h>
 #endif
 
-NAN_INLINE v8::Local<v8::Value> ErrnoException(const int errorno) {
-    return NanError(strerror(errorno), errorno);
-}
-
-NAN_METHOD(Now) {
-    NanScope();
-
+void Now(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     timeval t;
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return NanThrowError(ErrnoException(errno));
+        return Nan::ThrowError(Nan::NanErrnoException(errno, "gettimeofday"));
     }
 
-    NanReturnValue(NanNew<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
+    info.GetReturnValue().Set(Nan::New<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
 }
 
-NAN_METHOD(NowDouble) {
-    NanScope();
-
+void NowDouble(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     timeval t;
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return NanThrowError(ErrnoException(errno));
+        return Nan::ThrowError(Nan::NanErrnoException(errno, "gettimeofday"));
     }
 
-    NanReturnValue(NanNew<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
+    info.GetReturnValue().Set(Nan::New<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
 }
 
-NAN_METHOD(NowStruct) {
-    NanScope();
-
+void NowStruct(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     timeval t;
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return NanThrowError(ErrnoException(errno));
+        return Nan::ThrowError(Nan::NanErrnoException(errno, "gettimeofday"));
     }
 
-    v8::Local<v8::Array> array = NanNew<v8::Array>(2);
-    array->Set(NanNew<v8::Integer>(0), NanNew<v8::Number>((double)t.tv_sec));
-    array->Set(NanNew<v8::Integer>(1), NanNew<v8::Number>((double)t.tv_usec));
+    v8::Local<v8::Array> array = Nan::New<v8::Array>(2);
+    array->Set(Nan::New<v8::Integer>(0), Nan::New<v8::Number>((double)t.tv_sec));
+    array->Set(Nan::New<v8::Integer>(1), Nan::New<v8::Number>((double)t.tv_usec));
 
-    NanReturnValue(array);
+    info.GetReturnValue().Set(array);
 }
 
-void InitAll(v8::Handle<v8::Object> exports) {
-    exports->Set(NanNew<v8::String>("now"),
-            NanNew<v8::FunctionTemplate>(Now)->GetFunction());
-    exports->Set(NanNew<v8::String>("nowDouble"),
-            NanNew<v8::FunctionTemplate>(NowDouble)->GetFunction());
-    exports->Set(NanNew<v8::String>("nowStruct"),
-            NanNew<v8::FunctionTemplate>(NowStruct)->GetFunction());
+NAN_MODULE_INIT(InitAll) {
+    Nan::Export(target, "now", Now);
+    Nan::Export(target, "nowDouble", NowDouble);
+    Nan::Export(target, "nowStruct", NowStruct);
 
 #if defined(_MSC_VER)
     getSystemTime = (WinGetSystemTime) GetProcAddress(
