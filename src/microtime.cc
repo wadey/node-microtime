@@ -3,8 +3,6 @@
 #if NODE_VERSION_AT_LEAST(0, 11, 1) && !defined(_MSC_VER)
     #include <sys/types.h>
 #endif
-#include <v8.h>
-#include <node.h>
 
 #include <errno.h>
 
