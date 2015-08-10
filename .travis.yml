@@ -1,4 +1,10 @@
 language: node_js
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
 node_js:
   - "0.8"
   - "0.10"
@@ -6,6 +12,9 @@ node_js:
   - "iojs-1"
   - "iojs-2"
   - "iojs-3"
+before_install:
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+  - g++ -v
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
-sudo: false
+# sudo: false
