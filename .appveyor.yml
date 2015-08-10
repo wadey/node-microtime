@@ -22,8 +22,7 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - IF %nodejs_version% LSS 2 npm install
-  - IF %nodejs_version% GEQ 2 npm install --msvs_version=2013
+  - npm install --msvs_version=2013
 
 build: off
 
