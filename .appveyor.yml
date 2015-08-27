@@ -22,8 +22,11 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - IF %nodejs_version% EQU 0.8 npm install
-  - IF %nodejs_version% NEQ 0.8 npm install --msvs_version=2013
+  - IF %nodejs_version% LSS 1 npm -g install npm
+  - IF %nodejs_version% LSS 1 set PATH=%APPDATA%\npm;%PATH%
+  - npm install
+  # - IF %nodejs_version% EQU 0.8 npm install
+  # - IF %nodejs_version% NEQ 0.8 npm install --msvs_version=2013
 
 build: off
 
