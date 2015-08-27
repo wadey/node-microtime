@@ -1,3 +1,6 @@
+sudo: false
+env:
+  - CXX=g++-4.8
 language: node_js
 addons:
   apt:
@@ -13,8 +16,7 @@ node_js:
   - "iojs-2"
   - "iojs-3"
 before_install:
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
-  - g++ -v
+  - $CXX --version
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
 # sudo: false
