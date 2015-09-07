@@ -19,10 +19,8 @@ env:
   - TRAVIS_NODE_VERSION="iojs-3"
 install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
-  - npm install npm
-  - mv node_modules npm
-  - npm/.bin/npm --version
+  - npm --version
   - if [[ $TRAVIS_OS_NAME == "linux" ]]; then export CXX=g++-4.8; fi
   - $CXX --version
-  - npm/.bin/npm install
-script: npm/.bin/npm test
+  - npm install
+script: npm test
