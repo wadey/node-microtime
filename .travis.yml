@@ -1,26 +1,15 @@
-os:
-  - linux
-  - osx
 sudo: false
-language: cpp
+env:
+  - CXX=g++-4.8
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
-env:
-  matrix:
-  - TRAVIS_NODE_VERSION="0.8"
-  - TRAVIS_NODE_VERSION="0.10"
-  - TRAVIS_NODE_VERSION="0.12"
-  - TRAVIS_NODE_VERSION="iojs-1"
-  - TRAVIS_NODE_VERSION="iojs-2"
-  - TRAVIS_NODE_VERSION="iojs-3"
-install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
-  - npm --version
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then export CXX=g++-4.8; fi
-  - $CXX --version
-  - npm install
-script: npm test
+language: node_js
+node_js:
+  - iojs
+
+script:
+  - npm run test
