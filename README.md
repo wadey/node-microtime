@@ -1,6 +1,6 @@
 # node-microtime
 
-[![NPM](https://nodei.co/npm/microtime.png?downloadRank=true)](https://nodei.co/npm/microtime/)
+[![NPM](https://nodei.co/npm/microtime.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/microtime/)
 
 [![Build Status](https://api.travis-ci.org/wadey/node-microtime.svg?branch=master)](https://travis-ci.org/wadey/node-microtime): linux, osx
 
