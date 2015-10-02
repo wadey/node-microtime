@@ -16,8 +16,6 @@ be updated continuously or in ``ticks.''_
 
     npm install microtime
 
-* Requires npm >= 1.1.5 (which bundles node-gyp). See https://github.com/wadey/node-microtime/issues/9
-
 # Usage
 
 ### microtime.now()
