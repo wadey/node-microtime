@@ -44,7 +44,7 @@ void Now(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return Nan::ThrowError(Nan::NanErrnoException(errno, "gettimeofday"));
+        return Nan::ThrowError(Nan::ErrnoException(errno, "gettimeofday"));
     }
 
     info.GetReturnValue().Set(Nan::New<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
@@ -55,7 +55,7 @@ void NowDouble(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return Nan::ThrowError(Nan::NanErrnoException(errno, "gettimeofday"));
+        return Nan::ThrowError(Nan::ErrnoException(errno, "gettimeofday"));
     }
 
     info.GetReturnValue().Set(Nan::New<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
@@ -66,7 +66,7 @@ void NowStruct(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int r = gettimeofday(&t, NULL);
 
     if (r < 0) {
-        return Nan::ThrowError(Nan::NanErrnoException(errno, "gettimeofday"));
+        return Nan::ThrowError(Nan::ErrnoException(errno, "gettimeofday"));
     }
 
     v8::Local<v8::Array> array = Nan::New<v8::Array>(2);
