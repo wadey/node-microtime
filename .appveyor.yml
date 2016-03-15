@@ -15,9 +15,6 @@ environment:
   matrix:
     - nodejs_version: 0.10
     - nodejs_version: 0.12
-    - nodejs_version: 1
-    - nodejs_version: 2
-    - nodejs_version: 3
     - nodejs_version: 4
     - nodejs_version: 5
 
@@ -34,9 +31,7 @@ build: off
 test_script:
   # Output useful info for debugging.
   - node --version && npm --version
-  - IF %nodejs_version% LSS 1 npm test
-  # Work around https://github.com/iojs/io.js/issues/751
-  - IF %nodejs_version% GEQ 1 (If %nodejs_version% LSS 4 (iojs test.js) Else (npm test))
+  - npm test
 
 cache:
   - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> package.json  # global npm modules
