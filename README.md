@@ -1,10 +1,9 @@
 # node-microtime
 
-[![NPM](https://nodei.co/npm/microtime.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/microtime/)
-
-[![Build Status](https://api.travis-ci.org/wadey/node-microtime.svg?branch=master)](https://travis-ci.org/wadey/node-microtime): linux, osx
-
-[![Build status](https://ci.appveyor.com/api/projects/status/agqikkdghce1hi9u/branch/master?svg=true)](https://ci.appveyor.com/project/WadeSimmons/node-microtime/branch/master): windows
+[![Travis Build](https://img.shields.io/travis/wadey/node-microtime.svg?label=linux,%20os%20x)](https://travis-ci.org/wadey/node-microtime)
+[![AppVeyor Build](https://img.shields.io/appveyor/ci/WadeSimmons/node-microtime.svg?label=windows)](https://ci.appveyor.com/project/WadeSimmons/node-microtime)
+[![npm](https://img.shields.io/npm/dm/microtime.svg)](https://www.npmjs.com/package/microtime)
+[![npm](https://img.shields.io/npm/v/microtime.svg)](https://www.npmjs.com/package/microtime)
 
 Date.now() will only give you accuracy in milliseconds. This module calls
 `gettimeofday(2)` to get the time in microseconds and provides it in a few
