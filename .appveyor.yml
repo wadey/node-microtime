@@ -4,20 +4,14 @@
 # Build version format
 version: "{build}"
 
-clone_depth: 10
-
-# Fix line endings on Windows
-init:
-  - git config --global core.autocrlf true
-
 # What combinations to test
 environment:
   matrix:
-    - nodejs_version: 0.10
-    - nodejs_version: 0.12
-    - nodejs_version: 4
-    - nodejs_version: 5
-    - nodejs_version: 6
+    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
+    - nodejs_version: "4"
+    - nodejs_version: "5"
+    - nodejs_version: "6"
 
 install:
   - ps: Install-Product node $env:nodejs_version
@@ -34,8 +28,3 @@ test_script:
   - node --version && npm --version
   - npm ls
   - npm test
-
-cache:
-  - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> package.json  # global npm modules
-  - C:\Users\appveyor\AppData\Roaming\npm-cache -> package.json         # npm cache
-  - node_modules -> package.json 
