@@ -1,6 +1,6 @@
 {
   "name": "microtime",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Get the current time in microseconds",
   "author": "Wade Simmons <wade@wades.im> (http://wades.im/mons)",
   "homepage": "https://github.com/wadey/node-microtime",
