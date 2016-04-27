@@ -32,6 +32,7 @@ build: off
 test_script:
   # Output useful info for debugging.
   - node --version && npm --version
+  - npm ls
   - npm test
 
 cache:
