@@ -11,10 +11,16 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "format": "clang-format -i src/microtime.cc",
+    "lint": "standard && clang-format -output-replacements-xml src/microtime.cc | (! grep -q '<replacement ')"
   },
   "dependencies": {
     "bindings": "1.2.x",
     "nan": "2.3.x"
+  },
+  "devDependencies": {
+    "clang-format": "^1.0.38",
+    "standard": "^7.0.1"
   }
 }

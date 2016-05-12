@@ -23,4 +23,6 @@ install:
   - $CXX --version
   - npm install
   - npm ls
-script: npm test
+script:
+  - npm run lint
+  - npm test
