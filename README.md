@@ -1,7 +1,7 @@
 # node-microtime
 
-[![Travis Build](https://img.shields.io/travis/wadey/node-microtime.svg?label=linux,%20os%20x)](https://travis-ci.org/wadey/node-microtime)
-[![AppVeyor Build](https://img.shields.io/appveyor/ci/WadeSimmons/node-microtime.svg?label=windows)](https://ci.appveyor.com/project/WadeSimmons/node-microtime)
+[![Travis Build](https://img.shields.io/travis/wadey/node-microtime/master.svg?label=linux,%20os%20x)](https://travis-ci.org/wadey/node-microtime)
+[![AppVeyor Build](https://img.shields.io/appveyor/ci/WadeSimmons/node-microtime/master.svg?label=windows)](https://ci.appveyor.com/project/WadeSimmons/node-microtime)
 [![npm](https://img.shields.io/npm/dm/microtime.svg)](https://www.npmjs.com/package/microtime)
 [![npm](https://img.shields.io/npm/v/microtime.svg)](https://www.npmjs.com/package/microtime)
 
