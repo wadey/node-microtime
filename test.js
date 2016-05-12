@@ -7,15 +7,15 @@ console.log('microtime.nowStruct() =', microtime.nowStruct())
 console.log('\nGuessing clock resolution...')
 
 var start = microtime.now()
-  , minDiff = Infinity
-  , minCycles = 10000
-  , maxCycles = 100000
-  , cycles = maxCycles
+var minDiff = Infinity
+var minCycles = 10000
+var maxCycles = 100000
+var cycles = maxCycles
 
 for (var i = 0; i < cycles; ++i) {
   var a = microtime.now()
-    , b = microtime.now()
-    , diff = (b - a) || (b - start)
+  var b = microtime.now()
+  var diff = (b - a) || (b - start)
 
   if (diff > 0 && diff < minDiff) {
     minDiff = diff
@@ -24,7 +24,7 @@ for (var i = 0; i < cycles; ++i) {
 }
 
 if (minDiff === Infinity) {
-  console.log("Unable to guess clock resolution")
+  console.log('Unable to guess clock resolution')
 } else {
-  console.log("Clock resolution observed: " + minDiff + "us")
+  console.log('Clock resolution observed: ' + minDiff + 'us')
 }
