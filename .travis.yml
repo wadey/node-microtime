@@ -1,16 +1,11 @@
+# https://docs.travis-ci.com/user/trusty-ci-environment
+sudo: required
+dist: trusty
+
 os:
   - linux
   - osx
-sudo: false
 language: node_js
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
-env:
-  - CXX=g++-4.8
 node_js:
 - '0.10'
 - '0.12'
