@@ -14,6 +14,12 @@ environment:
     - nodejs_version: "6"
 
 install:
+  # work around an issue with node-pre-gyp and node 4x
+  # package.json has no certificates in it so we're cool
+  # https://github.com/mapbox/node-pre-gyp/issues/209
+  - IF %nodejs_version% EQU 4 npm config set -g cafile=package.json
+  - IF %nodejs_version% EQU 4 npm config set -g strict-ssl=false
+
   - ps: Install-Product node $env:nodejs_version
   - IF %nodejs_version% LSS 1 npm -g install npm
   - IF %nodejs_version% LSS 1 set PATH=%APPDATA%\npm;%PATH%
