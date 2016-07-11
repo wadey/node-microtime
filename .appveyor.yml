@@ -15,7 +15,9 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - IF %nodejs_version% LSS 1 npm -g install npm
+  # Need to update npm to fix this bug: https://github.com/nodejs/node-gyp/pull/952
+  - IF %nodejs_version% LSS 6 npm -g install npm@2
+  - IF %nodejs_version% EQU 6 npm -g install npm@3
   - IF %nodejs_version% LSS 1 set PATH=%APPDATA%\npm;%PATH%
   - npm install
   # - IF %nodejs_version% EQU 0.8 npm install
