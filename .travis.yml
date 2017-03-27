@@ -1,30 +1,69 @@
+sudo: false
+language: cpp
+compiler: gcc
+
 os:
   - linux
   - osx
-sudo: false
-language: cpp
+  
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - g++-4.8
+    - gcc-4.9
+    - g++-4.9
+
 env:
   matrix:
-  - TRAVIS_NODE_VERSION="0.10"
-  - TRAVIS_NODE_VERSION="0.12"
-  - TRAVIS_NODE_VERSION="4"
-  - TRAVIS_NODE_VERSION="5"
-  - TRAVIS_NODE_VERSION="6"
-  - TRAVIS_NODE_VERSION="7"
-  - TRAVIS_NODE_VERSION="8"
+  - NODE_VERSION="0.10"
+  - NODE_VERSION="0.12"
+  - NODE_VERSION="4"
+  - NODE_VERSION="5"
+  - NODE_VERSION="6"
+  - NODE_VERSION="7"
+  global:
+    - node_pre_gyp_region="eu-central-1"
+before_install:
+  - if [ $TRAVIS_OS_NAME == "linux" ]; then
+      export CC=/usr/bin/gcc-4.9;
+      export CXX=/usr/bin/g++-4.9;
+    fi
+    
+  - rm -rf ~/.nvm/ && git clone --depth 1 "https://github.com/creationix/nvm.git" ~/.nvm
+  
+  - source ~/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
+  
+  - if [ $NODE_VERSION == "0.10" ]; then
+      npm -g install npm@latest-2;
+    fi
+
+  - export PATH="./node_modules/.bin/:$PATH"
+  
+  - PUBLISH_BINARY=false
+  - if [[ $TRAVIS_TAG ]]; then PUBLISH_BINARY=true; fi;
+
+  - platform=$(uname -s | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/")
+
 install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
-  - npm --version
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then export CXX=g++-4.8; fi
-  - $CXX --version
-  - npm install
-  - npm ls
-script:
+  - npm install --build-from-source
   - npm run lint
   - npm test
+
+before_script:
+  - if [[ $PUBLISH_BINARY == true ]]; then 
+      node-pre-gyp package testpackage publish --verbose;
+    fi;
+
+script:
+  - INSTALL_RESULT=0
+  - if [[ $PUBLISH_BINARY == true ]]; then
+      INSTALL_RESULT=$(npm install --fallback-to-build=false > /dev/null)$? || true;
+    fi;
+  - if [[ $INSTALL_RESULT != 0 ]]; then node-pre-gyp unpublish; false; fi
+  - node-pre-gyp clean
+
+after_success:
+  - node-pre-gyp info
