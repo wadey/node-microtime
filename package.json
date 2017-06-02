@@ -1,6 +1,6 @@
 {
   "name": "microtime",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Get the current time in microseconds",
   "author": "Wade Simmons <wade@wades.im> (http://wades.im/mons)",
   "homepage": "https://github.com/wadey/node-microtime",
@@ -32,5 +32,7 @@
     "clang-format": "^1.0.38",
     "standard": "^10.0.1"
   },
-  "bundledDependencies":["node-pre-gyp"]
+  "bundledDependencies": [
+    "node-pre-gyp"
+  ]
 }
