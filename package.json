@@ -31,5 +31,6 @@
   "devDependencies": {
     "clang-format": "^1.0.38",
     "standard": "^10.0.1"
-  }
+  },
+  "bundledDependencies":["node-pre-gyp"]
 }
