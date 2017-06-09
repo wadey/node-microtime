@@ -1,9 +1,9 @@
 # node-microtime
 
-[![Travis Build](https://img.shields.io/travis/wadey/node-microtime/master.svg?label=linux,%20os%20x)](https://travis-ci.org/wadey/node-microtime)
+[![Travis Build](https://img.shields.io/travis/https://img.shields.io/travis/RisingStack/node-microtime.svg?label=linux,%20os%20x)](https://travis-ci.org/wadey/node-microtime)
 [![AppVeyor Build](https://img.shields.io/appveyor/ci/WadeSimmons/node-microtime/master.svg?label=windows)](https://ci.appveyor.com/project/WadeSimmons/node-microtime)
-[![npm](https://img.shields.io/npm/dm/microtime.svg)](https://www.npmjs.com/package/microtime)
-[![npm](https://img.shields.io/npm/v/microtime.svg)](https://www.npmjs.com/package/microtime)
+[![npm](https://img.shields.io/npm/dm/@risingstack/microtime.svg)](https://www.npmjs.com/package/@risingstack/microtime)
+[![npm](https://img.shields.io/npm/v/@risingstack/microtime.svg)](https://www.npmjs.com/package/@risingstack/microtime)
 
 Date.now() will only give you accuracy in milliseconds. This module calls
 `gettimeofday(2)` to get the time in microseconds and provides it in a few
@@ -13,7 +13,7 @@ be updated continuously or in ``ticks.''_
 
 # Installation
 
-    npm install microtime
+    npm install @risingstack/microtime
 
 # Usage
 
