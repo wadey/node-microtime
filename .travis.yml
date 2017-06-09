@@ -22,6 +22,7 @@ env:
   - NODE_VERSION="5"
   - NODE_VERSION="6"
   - NODE_VERSION="7"
+  - NODE_VERSION="8"
   global:
     - node_pre_gyp_region="eu-central-1"
 before_install:
