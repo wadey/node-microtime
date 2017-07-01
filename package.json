@@ -7,32 +7,26 @@
   "repository": "git://github.com/wadey/node-microtime.git",
   "main": "./index",
   "license": "MIT",
-  "binary": {
-    "module_name": "microtime",
-    "module_path": "./build/Release/",
-    "host": "https://github.com",
-    "remote_path": "./wadey/node-microtime/releases/download/v{version}/",
-    "package_name": "{node_abi}-{platform}-{arch}.tar.gz"
-  },
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "install": "node-pre-gyp install --fallback-to-build --loglevel http",
+    "install": "prebuild-install || node-gyp rebuild",
+    "rebuild": "prebuild --compile",
+    "prebuild": "prebuild --all --strip --verbose",
     "test": "node test.js",
     "format": "clang-format -i src/microtime.cc",
     "lint": "standard && clang-format -output-replacements-xml src/microtime.cc | (! grep -q '<replacement ')"
   },
   "dependencies": {
-    "node-pre-gyp": "0.6.X",
     "bindings": "1.2.x",
-    "nan": "2.6.x"
+    "nan": "2.6.x",
+    "prebuild-install": "^2.1.0"
   },
   "devDependencies": {
     "clang-format": "^1.0.38",
-    "standard": "^10.0.1"
-  },
-  "bundledDependencies": [
-    "node-pre-gyp"
-  ]
+    "standard": "^10.0.1",
+    "prebuild": "^6.1.0",
+    "prebuild-ci": "^2.2.3"
+  }
 }

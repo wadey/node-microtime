@@ -24,25 +24,24 @@ platform:
 image: Visual Studio 2015
 
 artifacts:
-  - path: build\**\*.tar.gz
+  - path: prebuilds\*.tar.gz
     name: microtime_binary
 
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
+  - set PATH=%APPDATA%\npm;%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
   - IF %nodejs_version% LSS 4 npm install -g npm@2
   - IF %nodejs_version% GEQ 4 npm install -g npm
-  - npm install -g node-gyp
-  - npm install -g node-pre-gyp
 
   # work around an issue with node-gyp v3.3.1 and node 4x
   # https://github.com/nodejs/node-gyp/issues/921
   # (copied from libxmljs)
-  - npm config set -g cafile=package.json
-  - npm config set -g strict-ssl=false
-  - npm config set registry http://registry.npmjs.org/
+  - IF %nodejs_version% EQU 4 npm config set -g cafile=package.json
+  - IF %nodejs_version% EQU 4 npm config set -g strict-ssl=false
+  - IF %nodejs_version% EQU 4 npm config set registry http://registry.npmjs.org/
 
 build_script:
-  - npm install --msvs_version=2015
+  - npm install
 
 test_script:
   # Output useful info for debugging.
@@ -51,7 +50,7 @@ test_script:
   - npm test
 
 after_test:
-  - node-pre-gyp package 2>&1
+  - prebuild --strip
 
 deploy:
   - provider: GitHub
@@ -64,9 +63,10 @@ deploy:
       appveyor_repo_tag: true
 
 after_deploy:
-  - npm config delete -g cafile
-  - npm config delete -g strict-ssl
-  - npm config delete registry
-  - node-pre-gyp clean
-  - npm install --fallback-to-build=false
+  - IF %nodejs_version% EQU 4 npm config delete -g cafile
+  - IF %nodejs_version% EQU 4 npm config delete -g strict-ssl
+  - IF %nodejs_version% EQU 4 npm config delete registry
+  - rmdir /s /q prebuilds
+  - rmdir /s /q build
+  - npm install
   - npm test
