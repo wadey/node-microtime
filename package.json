@@ -7,6 +7,11 @@
   "repository": "git://github.com/wadey/node-microtime.git",
   "main": "./index",
   "license": "MIT",
+  "keywords": [
+    "microtime",
+    "microseconds",
+    "gettimeofday"
+  ],
   "engines": {
     "node": ">= 0.8.0"
   },
