@@ -51,6 +51,14 @@ test_script:
 
 after_test:
   - prebuild --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 46 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 47 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 48 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 49 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 50 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 51 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 53 --strip
+  - IF %nodejs_version% EQU 4 prebuild -r electron -t 54 --strip
 
 deploy:
   - provider: GitHub
