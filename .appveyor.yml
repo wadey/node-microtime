@@ -9,8 +9,6 @@ environment:
   github_release_token:
     secure: wfW7RWDvNKnF2haNaW7GVa/xi7Ot4yy6puIAsN2mjmHJQtQpx3XvH+6lf2Tr8Xr9
   matrix:
-    - nodejs_version: "0.10"
-    - nodejs_version: "0.12"
     - nodejs_version: "4"
     - nodejs_version: "5"
     - nodejs_version: "6"
@@ -31,8 +29,7 @@ artifacts:
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - set PATH=%APPDATA%\npm;%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
-  - IF %nodejs_version% LSS 4 npm install -g npm@2
-  - IF %nodejs_version% GEQ 4 npm install -g npm
+  - npm install -g npm
 
   # work around an issue with node-gyp v3.3.1 and node 4x
   # https://github.com/nodejs/node-gyp/issues/921
