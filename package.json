@@ -29,9 +29,9 @@
     "prebuild-install": "^2.1.0"
   },
   "devDependencies": {
-    "clang-format": "^1.0.38",
-    "standard": "^10.0.1",
+    "clang-format": "^1.0.41",
     "prebuild": "^6.1.0",
-    "prebuild-ci": "^2.2.3"
+    "prebuild-ci": "^2.2.3",
+    "standard": "^10.0.1"
   }
 }
