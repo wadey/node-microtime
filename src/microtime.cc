@@ -6,7 +6,7 @@
 
 #include <errno.h>
 
-#include <nan.h>
+#include <napi.h>
 
 #if defined(_MSC_VER)
 #include <time.h>
@@ -39,57 +39,48 @@ int gettimeofday(struct timeval *tv, struct timezone *tz) {
 #include <sys/time.h>
 #endif
 
-void Now(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+Napi::Value Now(const Napi::CallbackInfo& info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "gettimeofday"));
+    throw Napi::Error::New(info.Env(), "gettimeofday");
   }
 
-  info.GetReturnValue().Set(
-      Nan::New<v8::Number>((t.tv_sec * 1000000.0) + t.tv_usec));
+  return Napi::Number::New(info.Env(), ((t.tv_sec * 1000000.0) + t.tv_usec));
 }
 
-void NowDouble(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+Napi::Value NowDouble(const Napi::CallbackInfo& info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "gettimeofday"));
+    throw Napi::Error::New(info.Env(), "gettimeofday");
   }
 
-  info.GetReturnValue().Set(
-      Nan::New<v8::Number>(t.tv_sec + (t.tv_usec * 0.000001)));
+  return Napi::Number::New(info.Env(), t.tv_sec + (t.tv_usec * 0.000001));
 }
 
-void NowStruct(const Nan::FunctionCallbackInfo<v8::Value> &info) {
+Napi::Value NowStruct(const Napi::CallbackInfo& info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "gettimeofday"));
+    throw Napi::Error::New(info.Env(), "gettimeofday");
   }
 
-  v8::Local<v8::Array> array = Nan::New<v8::Array>(2);
-  array->Set(Nan::New<v8::Integer>(0), Nan::New<v8::Number>((double)t.tv_sec));
-  array->Set(Nan::New<v8::Integer>(1), Nan::New<v8::Number>((double)t.tv_usec));
+  Napi::Array array = Napi::Array::New(info.Env(), 2);
+  array.Set((uint32_t)0, (double)t.tv_sec);
+  array.Set((uint32_t)1, (double)t.tv_usec);
 
-  info.GetReturnValue().Set(array);
+  return array;
 }
 
-NAN_MODULE_INIT(InitAll) {
-  Nan::Export(target, "now", Now);
-  Nan::Export(target, "nowDouble", NowDouble);
-  Nan::Export(target, "nowStruct", NowStruct);
-
-#if defined(_MSC_VER)
-  getSystemTime = (WinGetSystemTime)GetProcAddress(
-      GetModuleHandle(TEXT("kernel32.dll")), "GetSystemTimePreciseAsFileTime");
-  if (getSystemTime == NULL) {
-    getSystemTime = &GetSystemTimeAsFileTime;
-  }
-#endif
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+  exports.Set(Napi::String::New(env, "now"), Napi::Function::New(env, Now));
+  exports.Set(Napi::String::New(env, "nowDouble"), Napi::Function::New(env, NowDouble));
+  exports.Set(Napi::String::New(env, "nowStruct"), Napi::Function::New(env, NowStruct));
+  return exports;
 }
 
-NODE_MODULE(microtime, InitAll)
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, Init);
