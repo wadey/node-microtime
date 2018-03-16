@@ -39,7 +39,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz) {
 #include <sys/time.h>
 #endif
 
-Napi::Value Now(const Napi::CallbackInfo& info) {
+Napi::Value Now(const Napi::CallbackInfo &info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
 
@@ -50,7 +50,7 @@ Napi::Value Now(const Napi::CallbackInfo& info) {
   return Napi::Number::New(info.Env(), ((t.tv_sec * 1000000.0) + t.tv_usec));
 }
 
-Napi::Value NowDouble(const Napi::CallbackInfo& info) {
+Napi::Value NowDouble(const Napi::CallbackInfo &info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
 
@@ -61,7 +61,7 @@ Napi::Value NowDouble(const Napi::CallbackInfo& info) {
   return Napi::Number::New(info.Env(), t.tv_sec + (t.tv_usec * 0.000001));
 }
 
-Napi::Value NowStruct(const Napi::CallbackInfo& info) {
+Napi::Value NowStruct(const Napi::CallbackInfo &info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
 
@@ -78,8 +78,10 @@ Napi::Value NowStruct(const Napi::CallbackInfo& info) {
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "now"), Napi::Function::New(env, Now));
-  exports.Set(Napi::String::New(env, "nowDouble"), Napi::Function::New(env, NowDouble));
-  exports.Set(Napi::String::New(env, "nowStruct"), Napi::Function::New(env, NowStruct));
+  exports.Set(Napi::String::New(env, "nowDouble"),
+              Napi::Function::New(env, NowDouble));
+  exports.Set(Napi::String::New(env, "nowStruct"),
+              Napi::Function::New(env, NowStruct));
   return exports;
 }
 
