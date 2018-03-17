@@ -82,6 +82,13 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
               Napi::Function::New(env, NowDouble));
   exports.Set(Napi::String::New(env, "nowStruct"),
               Napi::Function::New(env, NowStruct));
+#if defined(_MSC_VER)
+  getSystemTime = (WinGetSystemTime)GetProcAddress(
+      GetModuleHandle(TEXT("kernel32.dll")), "GetSystemTimePreciseAsFileTime");
+  if (getSystemTime == NULL) {
+    getSystemTime = &GetSystemTimeAsFileTime;
+  }
+#endif
   return exports;
 }
 
