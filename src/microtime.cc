@@ -44,7 +44,9 @@ Napi::Value Now(const Napi::CallbackInfo &info) {
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    throw Napi::Error::New(info.Env(), "gettimeofday");
+    Napi::Error e = Napi::Error::New(info.Env(), "gettimeofday");
+    e.Set("code", Napi::Number::New(info.Env(), errno));
+    throw e;
   }
 
   return Napi::Number::New(info.Env(), ((t.tv_sec * 1000000.0) + t.tv_usec));
@@ -53,9 +55,10 @@ Napi::Value Now(const Napi::CallbackInfo &info) {
 Napi::Value NowDouble(const Napi::CallbackInfo &info) {
   timeval t;
   int r = gettimeofday(&t, NULL);
-
   if (r < 0) {
-    throw Napi::Error::New(info.Env(), "gettimeofday");
+    Napi::Error e = Napi::Error::New(info.Env(), "gettimeofday");
+    e.Set("code", Napi::Number::New(info.Env(), errno));
+    throw e;
   }
 
   return Napi::Number::New(info.Env(), t.tv_sec + (t.tv_usec * 0.000001));
@@ -66,7 +69,9 @@ Napi::Value NowStruct(const Napi::CallbackInfo &info) {
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    throw Napi::Error::New(info.Env(), "gettimeofday");
+    Napi::Error e = Napi::Error::New(info.Env(), "gettimeofday");
+    e.Set("code", Napi::Number::New(info.Env(), errno));
+    throw e;
   }
 
   Napi::Array array = Napi::Array::New(info.Env(), 2);
