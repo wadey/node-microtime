@@ -30,7 +30,7 @@ artifacts:
 install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   - set PATH=%APPDATA%\npm;%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
-  - npm install -g npm
+  # - npm install -g npm
 
   # work around an issue with node-gyp v3.3.1 and node 4x
   # https://github.com/nodejs/node-gyp/issues/921
