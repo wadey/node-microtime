@@ -20,7 +20,7 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run lint-test
+  - npm run test
 
 before_deploy:
   - SET ARCHIVE_NAME=%APPVEYOR_REPO_TAG_NAME%-win32-%PLATFORM%.tar.gz
