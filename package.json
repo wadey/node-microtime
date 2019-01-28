@@ -13,7 +13,7 @@
     "gettimeofday"
   ],
   "engines": {
-    "node": ">= 8.6.0"
+    "node": ">= 6.14.2"
   },
   "scripts": {
     "install": "node-gyp-build",
