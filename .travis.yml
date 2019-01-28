@@ -14,9 +14,11 @@ jobs:
     - os: linux
       node_js: node
       env: [TEST_CMD=lint-test, BUILD_CMD=prebuild, BUILD_GROUP=linux-x64]
-    - os: osx
-      node_js: 6
-      env: [TEST_CMD=lint-test]
+    # fails to compile with Node v6, but the n-api artifact built with a newer
+    # version does work with v6.
+    # - os: osx
+    # - node_js: 6
+    # - env: [TEST_CMD=lint-test]
     - os: osx
       node_js: 8
       env: [TEST_CMD=lint-test]
