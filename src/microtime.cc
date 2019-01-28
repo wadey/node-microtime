@@ -1,9 +1,3 @@
-#include <node_version.h>
-
-#if NODE_VERSION_AT_LEAST(0, 11, 1) && !defined(_MSC_VER)
-#include <sys/types.h>
-#endif
-
 #include <errno.h>
 
 #include <napi.h>
@@ -51,35 +45,41 @@ Napi::Error ErrnoException(Napi::Env env, int errorno) {
 }
 
 Napi::Value Now(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
   timeval t;
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    throw ErrnoException(info.Env(), errno);
+    ErrnoException(env, errno).ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  return Napi::Number::New(info.Env(), ((t.tv_sec * 1000000.0) + t.tv_usec));
+  return Napi::Number::New(env, ((t.tv_sec * 1000000.0) + t.tv_usec));
 }
 
 Napi::Value NowDouble(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
   timeval t;
   int r = gettimeofday(&t, NULL);
   if (r < 0) {
-    throw ErrnoException(info.Env(), errno);
+    ErrnoException(env, errno).ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  return Napi::Number::New(info.Env(), t.tv_sec + (t.tv_usec * 0.000001));
+  return Napi::Number::New(env, t.tv_sec + (t.tv_usec * 0.000001));
 }
 
 Napi::Value NowStruct(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
   timeval t;
   int r = gettimeofday(&t, NULL);
 
   if (r < 0) {
-    throw ErrnoException(info.Env(), errno);
+    ErrnoException(env, errno).ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Napi::Array array = Napi::Array::New(info.Env(), 2);
+  Napi::Array array = Napi::Array::New(env, 2);
   array.Set((uint32_t)0, (double)t.tv_sec);
   array.Set((uint32_t)1, (double)t.tv_usec);
 
