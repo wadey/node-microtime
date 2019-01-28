@@ -1,28 +1,45 @@
-os:
-  - linux
-  - osx
-sudo: false
 language: node_js
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
-node_js:
-  - "4"
-  - "5"
-  - "6"
-  - "7"
-  - "8"
-  - "9"
-  - "10"
-  - "11"
 
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.8; fi
+jobs:
+  include:
+    - os: linux
+      node_js: 8
+      env: [TEST_CMD=lint-test]
+    - os: linux
+      node_js: 10
+      env: [TEST_CMD=lint-test]
+    - os: linux
+      node_js: node
+      env: [TEST_CMD=lint-test, BUILD_CMD=prebuild, BUILD_GROUP=linux-x64]
+    - os: osx
+      node_js: 8
+      env: [TEST_CMD=lint-test]
+    - os: osx
+      node_js: 10
+      env: [TEST_CMD=lint-test]
+    - os: osx
+      node_js: node
+      env: [TEST_CMD=lint-test, BUILD_CMD=prebuild, BUILD_GROUP=darwin-x64]
+    - name: arm
+      os: linux
+      node_js: node
+      env: [BUILD_CMD=prebuildify-cross-armv7, BUILD_GROUP=arm]
+      if: tag is present
 
 script:
-  - npm run lint
-  - npm test
-  - ./node_modules/.bin/prebuild-ci
+  - if [[ ! -z "$TEST_CMD" ]]; then npm run $TEST_CMD; fi
+
+before_deploy:
+  - export ARCHIVE_NAME="${TRAVIS_TAG:-latest}-$BUILD_GROUP.tar.gz"
+  - npm run $BUILD_CMD
+  - tar -zcvf "$ARCHIVE_NAME" -C prebuilds .
+
+deploy:
+  provider: releases
+  draft: false
+  api_key: "$PREBUILDIFY_TOKEN"
+  file: "$ARCHIVE_NAME"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "! -z $BUILD_CMD"

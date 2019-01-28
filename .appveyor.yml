@@ -1,73 +1,39 @@
-# AppVeyor file
-# http://www.appveyor.com/docs/appveyor-yml
+build: false
+skip_branch_with_pr: true
 
-# Build version format
-version: "{build}"
-
-# What combinations to test
 environment:
-  github_release_token:
-    secure: wfW7RWDvNKnF2haNaW7GVa/xi7Ot4yy6puIAsN2mjmHJQtQpx3XvH+6lf2Tr8Xr9
   matrix:
-    - nodejs_version: "4"
-    - nodejs_version: "5"
-    - nodejs_version: "6"
-    - nodejs_version: "7"
     - nodejs_version: "8"
-    - nodejs_version: "9"
     - nodejs_version: "10"
-    - nodejs_version: "11"
+    - nodejs_version: "Current"
 
+configuration: Release
 platform:
-  - x86
   - x64
 
-image: Visual Studio 2015
-
-artifacts:
-  - path: prebuilds\*.tar.gz
-    name: microtime_binary
-
 install:
+  - SET PATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin;%PATH%
   - ps: Install-Product node $env:nodejs_version $env:platform
-  - set PATH=%APPDATA%\npm;%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
-
-  - IF %nodejs_version% EQU 5 npm install -g npm@3
-
-  # work around an issue with node-gyp v3.3.1 and node 4x
-  # https://github.com/nodejs/node-gyp/issues/921
-  # (copied from libxmljs)
-  - IF %nodejs_version% EQU 4 npm config set -g cafile=package.json
-  - IF %nodejs_version% EQU 4 npm config set -g strict-ssl=false
-  - IF %nodejs_version% EQU 4 npm config set registry http://registry.npmjs.org/
-
-build_script:
-  - npm install
+  - SET PATH=%APPDATA%\npm;%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
+  - npm i
 
 test_script:
-  # Output useful info for debugging.
-  - node --version && npm --version
-  - npm ls
-  - npm test
+  - node --version
+  - npm --version
+  - npm run lint-test
 
-after_test:
-  - prebuild --strip
+before_deploy:
+  - SET ARCHIVE_NAME=%APPVEYOR_REPO_TAG_NAME%-win32-%PLATFORM%.tar.gz
+  - npm run prebuild
+  - tar -zcvf "%ARCHIVE_NAME%" -C prebuilds .
+  - appveyor PushArtifact %ARCHIVE_NAME%
 
 deploy:
   - provider: GitHub
-    release: $(APPVEYOR_REPO_TAG_NAME)
-    artifact: microtime_binary
-    auth_token: $(github_release_token)
+    artifact: $(ARCHIVE_NAME)
+    auth_token:
+      secure: wfW7RWDvNKnF2haNaW7GVa/xi7Ot4yy6puIAsN2mjmHJQtQpx3XvH+6lf2Tr8Xr9
     draft: false
-    prerelease: false
     on:
       appveyor_repo_tag: true
-
-after_deploy:
-  - IF %nodejs_version% EQU 4 npm config delete -g cafile
-  - IF %nodejs_version% EQU 4 npm config delete -g strict-ssl
-  - IF %nodejs_version% EQU 4 npm config delete registry
-  - rmdir /s /q prebuilds
-  - rmdir /s /q build
-  - npm install
-  - npm test
+      nodejs_version: "Current"
