@@ -3,6 +3,9 @@ language: node_js
 jobs:
   include:
     - os: linux
+      node_js: 4
+      env: [TEST_CMD=lint-test]
+    - os: linux
       node_js: 6
       env: [TEST_CMD=lint-test]
     - os: linux
@@ -19,6 +22,12 @@ jobs:
     # - os: osx
     # - node_js: 6
     # - env: [TEST_CMD=lint-test]
+    - os: osx
+      node_js: 4
+      env: [TEST_CMD=lint-test]
+    - os: osx
+      node_js: 6
+      env: [TEST_CMD=lint-test]
     - os: osx
       node_js: 8
       env: [TEST_CMD=lint-test]
