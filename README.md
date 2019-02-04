@@ -11,6 +11,10 @@ different formats. The same warning from that function applies:
 _The resolution of the system clock is hardware dependent, and the time may
 be updated continuously or in ``ticks.''_
 
+## N-API Support
+
+As of version `3.0.0`, this library is built using the [N-API](https://nodejs.org/api/n-api.html) library. This should allow you to upgrade to newer versions of Node.js without having to reinstall / rebuild this library.
+
 # Installation
 
     npm install microtime
