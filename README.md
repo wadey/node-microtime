@@ -15,6 +15,10 @@ be updated continuously or in ``ticks.''_
 
 As of version `3.0.0`, this library is built using the [N-API](https://nodejs.org/api/n-api.html) library. This should allow you to upgrade to newer versions of Node.js without having to reinstall / rebuild this library.
 
+Version `3.0.0` and later also bundle prebuilt binaries for common systems in
+the npm package itself. These will be used if the version of Node you are using
+supports N-API ([>= v6.14.2](https://nodejs.org/api/n-api.html#n_api_n_api_version_matrix)), otherwise the binary will be recompiled on install.
+
 # Installation
 
     npm install microtime
@@ -23,9 +27,7 @@ As of version `3.0.0`, this library is built using the [N-API](https://nodejs.or
 
 ### microtime.now()
 
-Get the current time in microseconds as an integer. Since JavaScript can only
-represent integer values accurately up to `Math.pow(2, 53)`, this value will
-be accurate up to _Tue, 05 Jun 2255 23:47:34 GMT_.
+Get the current time in microseconds as an integer.
 
 ### microtime.nowDouble()
 
@@ -56,7 +58,3 @@ Starting with version 0.1.3, there is a test script that tries to guess the cloc
 
     Guessing clock resolution...
     Clock resolution observed: 1us
-
-## Warning for Cygwin users
-
-It appears that Cygwin only implements `gettimeofday(2)` with [millisecond accuracy](http://old.nabble.com/gettimeofday---millisecond-accuracy-p21085475.html).
