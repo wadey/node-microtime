@@ -36,7 +36,7 @@ jobs:
       env: [TEST_CMD=lint-test]
     - os: osx
       node_js: node
-      env: [TEST_CMD=lint-test, BUILD_CMD=prebuild, BUILD_GROUP=darwin-x64]
+      env: [TEST_CMD=lint-test, BUILD_CMD=prebuild-darwin, BUILD_GROUP=darwin]
     - name: arm
       os: linux
       node_js: node
