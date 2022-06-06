@@ -13,28 +13,28 @@
     "gettimeofday"
   ],
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 14.13.0"
   },
   "scripts": {
     "install": "node-gyp-build",
     "rebuild": "node-gyp rebuild",
-    "prebuild": "prebuildify -t 8.14.0 -t electron@3.0.0 --napi --strip",
+    "prebuild": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
     "download-prebuilds": "prebuildify-ci download",
-    "prebuildify-cross-armv7": "prebuildify-cross --platform=linux --arch=arm --arm-version=7 -- -t 8.14.0 --napi --strip",
+    "prebuildify-cross-armv7": "prebuildify-cross --platform=linux --arch=arm --arm-version=7 -- -t 14.13.0 --napi --strip",
     "test": "node test.js",
     "format": "clang-format -i src/microtime.cc",
     "lint-test": "standard && clang-format -output-replacements-xml src/microtime.cc | (! grep -q '<replacement ') && node test.js"
   },
   "dependencies": {
-    "node-addon-api": "^1.2.0",
-    "node-gyp-build": "^3.8.0"
+    "node-addon-api": "^5.0.0",
+    "node-gyp-build": "^4.4.0"
   },
   "devDependencies": {
-    "clang-format": "^1.2.4",
-    "node-gyp": "^3.8.0",
-    "prebuildify": "^2.11.0",
-    "prebuildify-ci": "^1.0.4",
-    "prebuildify-cross": "^3.1.2",
+    "clang-format": "^1.8.0",
+    "node-gyp": "^9.0.0",
+    "prebuildify": "^5.0.0",
+    "prebuildify-ci": "^1.0.5",
+    "prebuildify-cross": "^5.0.0",
     "standard": "^12.0.1"
   },
   "gypfile": true
