@@ -20,7 +20,7 @@
     "rebuild": "node-gyp rebuild",
     "prebuild": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
     "prebuild-linux-x64": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
-    "prebuild-linux-arm": "prebuildify-cross --platform=linux --arch=arm --arm-version=7 -- -t 14.13.0 --napi --strip",
+    "prebuild-linux-arm": "prebuildify-cross -i linux-armv7 -t 14.13.0 --napi --strip",
     "prebuild-darwin-x64+arm64": "prebuildify -t 14.13.0 -t electron@18.2.0 --arch x64+arm64 --napi --strip",
     "prebuild-win32-x64": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
     "prebuild-win32-x86": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
