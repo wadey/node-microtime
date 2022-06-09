@@ -3,6 +3,22 @@ on: [push, pull_request]
 permissions:
   contents: read
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Use node latest
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name: Install
+        run: npm install
+      - name: Lint Test
+        run: npm run lint-test
   test:
     strategy:
       matrix:
@@ -27,4 +43,4 @@ jobs:
       - name: Install
         run: npm install
       - name: Test
-        run: npm run lint-test
+        run: npm test
