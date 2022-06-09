@@ -27,4 +27,4 @@ jobs:
       - name: Install
         run: npm install
       - name: Test
-        run: npm lint-test
+        run: npm run lint-test
