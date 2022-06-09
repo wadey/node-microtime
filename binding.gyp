@@ -5,18 +5,29 @@
       'sources': [ 'src/microtime.cc' ],
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions' ],
-      'include_dirs': ["<!@(node -p \"require('node-addon-api').include\")"],
+      'include_dirs': ["<!(node -p \"require('node-addon-api').include_dir\")"],
       'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
-      'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
       'conditions': [
-        ['OS=="mac"',
-          {
-            'xcode_settings': {
-              # https://github.com/nodejs/node/pull/23685#issuecomment-430408541
-              'MACOSX_DEPLOYMENT_TARGET': '10.9',
+        ["OS=='win'", {
+          "defines": [
+            "_HAS_EXCEPTIONS=1"
+          ],
+          "msvs_settings": {
+            "VCCLCompilerTool": {
+              "ExceptionHandling": 1
             },
-          }
-        ]]
+          },
+        }],
+        ["OS=='mac'", {
+          'cflags+': ['-fvisibility=hidden'],
+          'xcode_settings': {
+            'GCC_SYMBOLS_PRIVATE_EXTERN': 'YES', # -fvisibility=hidden
+            'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
+            'CLANG_CXX_LIBRARY': 'libc++',
+            'MACOSX_DEPLOYMENT_TARGET': '10.7',
+          },
+        }],
+      ],
     }
   ]
 }
