@@ -15,6 +15,9 @@ jobs:
           - os: ubuntu-latest
             arch: x64
             build-group: linux-arm
+          - os: ubuntu-latest
+            arch: x64
+            build-group: linux-arm64
           - os: macos-latest
             arch: x64
             build-group: darwin-x64+arm64
