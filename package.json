@@ -37,7 +37,7 @@
   "devDependencies": {
     "clang-format": "^1.8.0",
     "node-gyp": "^9.0.0",
-    "prebuildify": "^5.0.0",
+    "prebuildify": "^6.0.0",
     "prebuildify-ci": "^1.0.5",
     "prebuildify-cross": "^5.0.0",
     "standard": "^17.1.0"
