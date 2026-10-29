@@ -13,20 +13,20 @@
     "gettimeofday"
   ],
   "engines": {
-    "node": ">= 14.13.0"
+    "node": ">= 22.22.2"
   },
   "scripts": {
     "install": "node-gyp-build",
     "rebuild": "node-gyp rebuild",
-    "prebuild": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
-    "prebuild-linux-x64": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
-    "prebuild-linux-arm": "prebuildify-cross -i linux-armv7 -t 14.13.0 --napi --strip",
-    "prebuild-linux-arm64": "prebuildify-cross -i linux-arm64 -t 14.13.0 --napi --strip",
-    "prebuild-darwin-x64+arm64": "prebuildify -t 14.13.0 -t electron@18.2.0 --arch x64+arm64 --napi --strip",
-    "prebuild-win32-x64": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
-    "prebuild-win32-x86": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
+    "prebuild": "prebuildify -t 22.22.2 -t electron@35.2.0 --napi --strip",
+    "prebuild-linux-x64": "prebuildify-cross -i almalinux-devtoolset11 -i alpine -t 22.22.2 -t electron@35.2.0 --napi --strip",
+    "prebuild-linux-arm": "prebuildify-cross -i linux-armv6 -i linux-armv7 -i linux-arm64-lts -t 22.22.2 --napi --strip",
+    "prebuild-darwin-x64+arm64": "prebuildify -t 22.22.2 -t electron@35.2.0 --arch x64+arm64 --napi --strip",
+    "prebuild-win32-x64": "prebuildify -t 22.22.2 -t electron@35.2.0 --napi --strip",
+    "prebuild-win32-x86": "prebuildify -t 22.22.2 -t electron@35.2.0 --napi --strip",
     "download-prebuilds": "prebuildify-ci download",
     "test": "node test.js",
+    "test-prebuild": "cross-env PREBUILDS_ONLY=1 npm t",
     "format": "clang-format -i src/microtime.cc",
     "lint-test": "standard && clang-format -output-replacements-xml src/microtime.cc | (! grep -q '<replacement ') && node test.js"
   },
@@ -36,10 +36,11 @@
   },
   "devDependencies": {
     "clang-format": "^1.8.0",
-    "node-gyp": "^9.0.0",
-    "prebuildify": "^5.0.0",
+    "cross-env": "^7.0.3",
+    "node-gyp": "^13.1.0",
+    "prebuildify": "^6.0.1",
     "prebuildify-ci": "^1.0.5",
-    "prebuildify-cross": "^5.0.0",
+    "prebuildify-cross": "^5.1.1",
     "standard": "^17.1.0"
   },
   "gypfile": true

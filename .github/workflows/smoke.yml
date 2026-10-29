@@ -1,0 +1,59 @@
+name: Smoke
+on: workflow_dispatch
+concurrency:
+  group: smoke
+  cancel-in-progress: true
+jobs:
+  build:
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        # Same as release.yml
+        include:
+          - os: ubuntu-latest
+            arch: x64
+            build-group: linux-x64
+          - os: ubuntu-latest
+            arch: x64
+            build-group: linux-arm
+          - os: ubuntu-latest
+            arch: x64
+            build-group: android-arm
+          - os: macos-latest
+            arch: x64
+            build-group: darwin-x64+arm64
+          - os: windows-latest
+            arch: x86
+            build-group: win32-x86
+          - os: windows-latest
+            arch: x64
+            build-group: win32-x64
+    runs-on: ${{ matrix.os }}
+    name: Build ${{ matrix.build-group }}
+    env:
+      BUILD_GROUP: ${{ matrix.build-group }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Set up node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          architecture: ${{ matrix.arch }}
+      - name: Install
+        run: npm install --ignore-scripts
+      - name: Prebuild
+        run: npm run prebuild-$BUILD_GROUP
+        shell: bash
+      - name: Prepare artifact
+        run: tar -zcvf $BUILD_GROUP.tar.gz -C prebuilds .
+        shell: bash
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ env.BUILD_GROUP }}
+          path: ${{ env.BUILD_GROUP }}.tar.gz
+          retention-days: 1
