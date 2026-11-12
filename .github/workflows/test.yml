@@ -53,6 +53,9 @@ jobs:
       - name: Test
         run: npm test
       - name: Test npm pack
+        # Skip on Windows + Node 22: installing without prebuilds in a fresh directory falls back to
+        # Node 22's bundled node-gyp@11.5.0, which does not support Visual Studio 2026 on windows-latest.
+        if: ${{ !(matrix.os == 'windows-latest' && matrix.node == 22) }}
         shell: bash
         run: |
           PKG_TGZ="$(npm pack)"
