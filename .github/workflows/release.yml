@@ -34,6 +34,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+        with:
+          version: v0.21.0
       - name: Set up node
         uses: actions/setup-node@v7
         with:
@@ -53,22 +57,22 @@ jobs:
           name: ${{ env.BUILD_GROUP }}
           path: ${{ env.BUILD_GROUP }}.tar.gz
           retention-days: 1
-  release:
-    needs: build
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    name: Release
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: artifacts
-      - name: Create GitHub release
-        uses: docker://antonyurchenko/git-release:v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: artifacts/*/*.tar.gz
+  # release:
+  #   needs: build
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   name: Release
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v8
+  #       with:
+  #         path: artifacts
+  #     - name: Create GitHub release
+  #       uses: docker://antonyurchenko/git-release:v4
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         args: artifacts/*/*.tar.gz
