@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: '0 9 * * 1'
   workflow_dispatch:
+  # For testing the PR
+  push:
+    branches:
+      - citgm
 
 permissions:
   contents: read
