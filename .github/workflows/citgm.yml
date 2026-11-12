@@ -24,6 +24,8 @@ jobs:
           - { os: macos-latest, arch: x86 }
           - { os: windows-latest, arch: x86, node: 24 }
           - { os: windows-latest, arch: x86, node: 26 }
+          - { os: windows-latest, arch: x86, node: '27-nightly' }
+          - { os: windows-latest, arch: x86, node: '28-nightly' }
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} / Node ${{ matrix.node }} ${{ matrix.arch }}
     steps:
