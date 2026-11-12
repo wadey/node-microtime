@@ -56,3 +56,13 @@ jobs:
           architecture: ${{ matrix.arch }}
       - name: Run CITGM
         run: npx --yes citgm microtime
+      - name: Test published prebuild from npm
+        shell: bash
+        env:
+          PREBUILDS_ONLY: '1'
+        run: |
+          cd "$(mktemp -d)"
+          npm init -y
+          npm install --ignore-scripts microtime
+          node -p "require('node-gyp-build').resolve('./node_modules/microtime')"
+          node node_modules/microtime/test.js
