@@ -1,0 +1,32 @@
+name: CITGM
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  citgm:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [22, 24, 26, 'latest', 'nightly']
+        arch: [x86, x64]
+        exclude:
+          - { os: ubuntu-latest, arch: x86 }
+          - { os: macos-latest, arch: x86 }
+          - { os: windows-latest, arch: x86, node: 24 }
+          - { os: windows-latest, arch: x86, node: 26 }
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} / Node ${{ matrix.node }} ${{ matrix.arch }}
+    steps:
+      - name: Use node ${{ matrix.node }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.arch }}
+      - name: Run CITGM
+        run: npx --yes citgm microtime
