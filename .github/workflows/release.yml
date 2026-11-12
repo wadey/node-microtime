@@ -74,8 +74,16 @@ jobs:
         with:
           path: artifacts
       - name: Create GitHub release
-        uses: docker://antonyurchenko/git-release:v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: artifacts/*/*.tar.gz
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            TAG="${GITHUB_REF_NAME}"
+          else
+            TAG="v$(node -p 'require("./package.json").version')"
+          fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" artifacts/*/*.tar.gz --clobber
+          else
+            gh release create "$TAG" artifacts/*/*.tar.gz --title "$TAG" --generate-notes
+          fi
