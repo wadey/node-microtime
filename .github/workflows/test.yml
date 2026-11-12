@@ -52,3 +52,29 @@ jobs:
         run: npm install
       - name: Test
         run: npm test
+      - name: Test npm pack
+        shell: bash
+        run: |
+          PKG_TGZ="$(npm pack)"
+          tar -ztvf "$PKG_TGZ"
+          ! tar -ztf "$PKG_TGZ" | grep -q '^package/build/'
+          ! tar -ztf "$PKG_TGZ" | grep -q '^package/\.github/'
+          TEST_DIR="$(mktemp -d)"
+          cd "$TEST_DIR"
+          npm init -y
+          npm install "$GITHUB_WORKSPACE/$PKG_TGZ"
+          node node_modules/microtime/test.js
+      - name: Test npm pack with prebuild
+        shell: bash
+        env:
+          PREBUILDS_ONLY: '1'
+        run: |
+          npm run prebuild
+          PKG_TGZ="$(npm pack)"
+          tar -ztvf "$PKG_TGZ"
+          tar -ztf "$PKG_TGZ" | grep -q '^package/prebuilds/'
+          TEST_DIR="$(mktemp -d)"
+          cd "$TEST_DIR"
+          npm init -y
+          npm install --ignore-scripts "$GITHUB_WORKSPACE/$PKG_TGZ"
+          node node_modules/microtime/test.js
