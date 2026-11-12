@@ -1,0 +1,92 @@
+name: Test Release Prebuilds
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to test (defaults to v + package.json version)'
+        required: false
+        type: string
+  release:
+    types: [created]
+
+permissions:
+  contents: read
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    name: Pack release tarball
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.event.release.tag_name || github.ref }}
+          submodules: recursive
+      - name: Set up node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Download release prebuilds
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: |
+          TAG="${TAG:-v$(node -p 'require("./package.json").version')}"
+          echo "Downloading prebuilds from release $TAG..."
+          mkdir -p prebuilds release-assets
+          gh release download "$TAG" --dir release-assets --pattern '*.tar.gz'
+          for f in release-assets/*.tar.gz; do
+            tar -zxvf "$f" -C prebuilds
+          done
+      - name: Pack npm tarball
+        run: |
+          PKG_TGZ=$(npm pack)
+          mv "$PKG_TGZ" package.tgz
+          tar -ztvf package.tgz
+      - name: Upload packed tarball
+        uses: actions/upload-artifact@v7
+        with:
+          name: package-tgz
+          path: package.tgz
+          retention-days: 1
+
+  test:
+    needs: pack
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [22, 24, 26]
+        arch: [x86, x64]
+        exclude:
+          - { os: ubuntu-latest, arch: x86 }
+          - { os: macos-latest, arch: x86 }
+          - { os: windows-latest, arch: x86, node: 24 }
+          - { os: windows-latest, arch: x86, node: 26 }
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} / Node ${{ matrix.node }} ${{ matrix.arch }}
+    steps:
+      - name: Checkout test.js
+        uses: actions/checkout@v7
+      - name: Use node ${{ matrix.node }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.arch }}
+      - name: Download packed tarball
+        uses: actions/download-artifact@v8
+        with:
+          name: package-tgz
+      - name: Install from tarball and test prebuild
+        shell: bash
+        env:
+          PREBUILDS_ONLY: '1'
+        run: |
+          TEST_DIR="$(mktemp -d)"
+          cp test.js "$TEST_DIR/"
+          cd "$TEST_DIR"
+          npm init -y
+          npm install --ignore-scripts "$GITHUB_WORKSPACE/package.tgz"
+          node -e "const m = require('microtime'); console.log('Loaded:', m.now(), m.nowDouble(), m.nowStruct())"
+          sed "s|require('./index')|require('microtime')|" test.js > run-test.js
+          node run-test.js
