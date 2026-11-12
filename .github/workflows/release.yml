@@ -31,7 +31,7 @@ jobs:
       BUILD_GROUP: ${{ matrix.build-group }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Enable legacy Docker API for prebuildify-cross
@@ -68,7 +68,7 @@ jobs:
     name: Release
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
