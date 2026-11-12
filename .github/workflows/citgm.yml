@@ -12,6 +12,26 @@ permissions:
   contents: read
 
 jobs:
+  check-nightly:
+    runs-on: ubuntu-latest
+    name: Check for newer Node nightly
+    steps:
+      - name: Check nodejs.org nightly index
+        run: |
+          node -e '
+            const maxMajor = 28;
+            fetch("https://nodejs.org/download/nightly/index.json")
+              .then(r => r.json())
+              .then(list => {
+                const latest = list[0].version;
+                const major = parseInt(latest.slice(1), 10);
+                console.log("Latest nightly:", latest, "(major:", major + ")");
+                if (major > maxMajor) {
+                  console.error(`Newer nightly major ${major}-nightly (${latest}) is available! Update citgm.yml matrix.`);
+                  process.exit(1);
+                }
+              });
+          '
   citgm:
     strategy:
       fail-fast: false
