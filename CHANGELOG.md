@@ -8,11 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Weekly CITGM and published prebuild workflow across supported OS, Node.js, and architecture targets (`x86`, `x64`, `arm64`).
+- Prebuild support for Windows ARM64 (`win32-arm64`).
+- ARM64 (`ubuntu-24.04-arm`, `macos-latest`, `windows-11-arm`) testing in the CI test matrix.
+- Weekly CITGM and published prebuild workflow across supported OS, Node.js (including `27-nightly` and `28-nightly`), and architecture targets (`x86`, `x64`, `arm64`).
 - `npm pack` and prebuild verification steps in CI test workflows.
+- `CHANGELOG.md` documenting project release history.
 
 ### Changed
 - Replaced `.npmignore` with explicit `files` allowlist in `package.json`.
+- Replaced `antonyurchenko/git-release` Docker action with `gh release` CLI in the release workflow.
+
+### Fixed
+- Trigger `test-release` workflow automatically after the `Release` workflow completes via `workflow_run`.
 
 ## [4.0.1] - 2026-11-11
 
