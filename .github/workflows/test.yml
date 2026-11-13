@@ -30,7 +30,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node: [22, 24, 26]
-        arch: [x86, x64]
+        arch: [x86, x64, arm64]
         exclude:
           - { os: ubuntu-latest, arch: x86 }
           - { os: macos-latest, arch: x86 }
