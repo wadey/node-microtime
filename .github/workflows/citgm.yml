@@ -15,11 +15,18 @@ jobs:
   check-nightly:
     runs-on: ubuntu-latest
     name: Check for newer Node nightly
+    outputs:
+      27-nightly: ${{ steps.nightly.outputs['27-nightly'] }}
+      28-nightly: ${{ steps.nightly.outputs['28-nightly'] }}
     steps:
       - name: Check nodejs.org nightly index
+        id: nightly
         run: |
           node -e '
+            const fs = require("fs");
             const maxMajor = 28;
+            const nightlies = [27, 28];
+            const requiredFiles = ["headers", "linux-x64", "win-x64-7z"];
             fetch("https://nodejs.org/download/nightly/index.json")
               .then(r => r.json())
               .then(list => {
@@ -30,9 +37,23 @@ jobs:
                   console.error(`Newer nightly major ${major}-nightly (${latest}) is available! Update citgm.yml matrix.`);
                   process.exit(1);
                 }
+                for (const m of nightlies) {
+                  const match = list.find(item =>
+                    item.version.startsWith(`v${m}.`) &&
+                    requiredFiles.every(f => item.files.includes(f)) &&
+                    (item.files.includes("osx-x64-tar") || item.files.includes("osx-x64-pkg") || item.files.includes("osx-arm64-tar"))
+                  );
+                  if (!match) {
+                    console.error(`No complete nightly found for v${m}`);
+                    process.exit(1);
+                  }
+                  console.log(`Resolved ${m}-nightly -> ${match.version}`);
+                  fs.appendFileSync(process.env.GITHUB_OUTPUT, `${m}-nightly=${match.version}\n`);
+                }
               });
           '
   citgm:
+    needs: check-nightly
     strategy:
       fail-fast: false
       matrix:
@@ -52,7 +73,7 @@ jobs:
       - name: Use node ${{ matrix.node }}
         uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ needs.check-nightly.outputs[matrix.node] || matrix.node }}
           architecture: ${{ matrix.arch }}
       - name: Run CITGM
         run: npx --yes citgm microtime
