@@ -63,6 +63,7 @@ jobs:
           - { os: macos-latest, arch: x64, node: '27-nightly' }
           - { os: macos-latest, arch: x64, node: '28-nightly' }
         include:
+          - { os: macos-latest, arch: arm64 }
           - { os: windows-latest, arch: x86, node: 22 }
           - { os: ubuntu-24.04-arm, arch: arm64 }
           - { os: windows-11-arm, arch: arm64 }
