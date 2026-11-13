@@ -3,10 +3,9 @@ on:
   schedule:
     - cron: '0 9 * * 1'
   workflow_dispatch:
-  # For testing the PR
-  push:
-    branches:
-      - citgm
+  pull_request:
+    paths:
+      - .github/workflows/citgm.yml
 
 permissions:
   contents: read
@@ -77,6 +76,8 @@ jobs:
       - name: Run CITGM
         run: npx --yes citgm microtime
       - name: Test published prebuild from npm
+        # Skip on Windows arm64 until win32-arm64 prebuilds are published to npm.
+        if: ${{ !(matrix.os == 'windows-latest' && matrix.arch == 'arm64') }}
         shell: bash
         env:
           PREBUILDS_ONLY: '1'
