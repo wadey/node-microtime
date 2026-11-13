@@ -58,16 +58,15 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node: [22, 24, 26, '27-nightly', '28-nightly']
-        arch: [x64]
+        arch: [x64, arm64]
         exclude:
           - { os: macos-latest, arch: x64, node: '27-nightly' }
           - { os: macos-latest, arch: x64, node: '28-nightly' }
         include:
-          - { os: macos-latest, arch: arm64 }
           - { os: windows-latest, arch: x86, node: 22 }
-          - { os: ubuntu-24.04-arm, arch: arm64 }
-          - { os: windows-11-arm, arch: arm64 }
-    runs-on: ${{ matrix.os }}
+          - { os: ubuntu-latest, arch: arm64, runner: ubuntu-24.04-arm }
+          - { os: windows-latest, arch: arm64, runner: windows-11-arm }
+    runs-on: ${{ matrix.runner || matrix.os }}
     name: ${{ matrix.os }} / Node ${{ matrix.node }} ${{ matrix.arch }}
     steps:
       - name: Use node ${{ matrix.node }}
