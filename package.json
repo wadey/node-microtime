@@ -24,6 +24,7 @@
     "prebuild-darwin-x64+arm64": "prebuildify -t 22.22.2 -t electron@35.2.0 --arch x64+arm64 --napi --strip",
     "prebuild-win32-x64": "prebuildify -t 22.22.2 -t electron@35.2.0 --napi --strip",
     "prebuild-win32-x86": "prebuildify -t 22.22.2 -t electron@35.2.0 --napi --strip",
+    "prebuild-win32-arm": "prebuildify -t 22.22.2 -t electron@35.2.0 --napi --strip",
     "download-prebuilds": "prebuildify-ci download",
     "test": "node test.js",
     "test-prebuild": "cross-env PREBUILDS_ONLY=1 npm t",
