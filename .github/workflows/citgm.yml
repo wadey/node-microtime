@@ -26,7 +26,7 @@ jobs:
             const fs = require("fs");
             const maxMajor = 28;
             const nightlies = [27, 28];
-            const requiredFiles = ["headers", "linux-x64", "win-x64-7z"];
+            const requiredFiles = ["headers", "linux-x64", "linux-arm64", "osx-arm64-tar", "win-x64-7z", "win-arm64-7z"];
             fetch("https://nodejs.org/download/nightly/index.json")
               .then(r => r.json())
               .then(list => {
@@ -40,8 +40,7 @@ jobs:
                 for (const m of nightlies) {
                   const match = list.find(item =>
                     item.version.startsWith(`v${m}.`) &&
-                    requiredFiles.every(f => item.files.includes(f)) &&
-                    (item.files.includes("osx-x64-tar") || item.files.includes("osx-x64-pkg") || item.files.includes("osx-arm64-tar"))
+                    requiredFiles.every(f => item.files.includes(f))
                   );
                   if (!match) {
                     console.error(`No complete nightly found for v${m}`);
@@ -59,15 +58,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node: [22, 24, 26, '27-nightly', '28-nightly']
-        arch: [x86, x64, arm64]
+        arch: [x64, arm64]
         exclude:
-          - { os: ubuntu-latest, arch: x86 }
-          - { os: macos-latest, arch: x86 }
+          - { os: macos-latest, arch: x64, node: '27-nightly' }
           - { os: macos-latest, arch: x64, node: '28-nightly' }
-          - { os: windows-latest, arch: x86, node: 24 }
-          - { os: windows-latest, arch: x86, node: 26 }
-          - { os: windows-latest, arch: x86, node: '27-nightly' }
-          - { os: windows-latest, arch: x86, node: '28-nightly' }
+        include:
+          - { os: windows-latest, arch: x86, node: 22 }
+          - { os: ubuntu-24.04-arm, arch: arm64 }
+          - { os: windows-11-arm, arch: arm64 }
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} / Node ${{ matrix.node }} ${{ matrix.arch }}
     steps:
